@@ -357,7 +357,7 @@ elif st.session_state.page == 'Retention':
     st.markdown("---")
 
     if retention_predict_btn:
-        # Prepare retention data
+        # Prepare retention data in the exact order the model was trained
         retention_input = pd.DataFrame({
             'Income': [income_ret],
             'Recency': [recency_ret],
@@ -370,6 +370,9 @@ elif st.session_state.page == 'Retention':
             'Teenhome': [teenhome],
             'Customer_Days': [customer_days]
         })
+
+        # Reorder columns to match the retention_features order
+        retention_input = retention_input[retention_features]
 
         # Scale the input
         retention_input_scaled = retention_scaler.transform(retention_input)
