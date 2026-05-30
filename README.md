@@ -15,6 +15,13 @@ A machine learning-powered Streamlit application for analyzing and predicting cu
   - 🆕 New Customers
 - **Visual Analytics**: Charts and metrics showing purchase patterns and engagement levels
 
+### Customer Retention Analysis ⭐ (NEW)
+- **Churn Prediction**: LogisticRegression model predicts customer churn probability
+- **Risk Assessment**: Classifies customers into High, Medium, or Low churn risk
+- **Personalized Recommendations**: Provides targeted retention strategies based on individual customer behavior
+- **Detailed Metrics**: Analyzes engagement score, spending patterns, recency, campaign acceptance, and more
+- **Risk Factor Summary**: Visualizes which factors contribute most to churn risk
+
 ## 🛠️ Tech Stack
 
 - **Python 3.x**
@@ -138,26 +145,50 @@ The application will open in your default browser at `http://localhost:8501`
 
 ## 📈 Future Enhancements
 
-- **Retention/Churn Prediction** *(Coming Soon)* - Advanced ML models to predict customer churn risk and provide targeted retention strategies
-- Batch customer analysis
-- Export predictions to CSV
+- Advanced churn prediction models (Random Forest, XGBoost)
+- Batch customer analysis and bulk predictions
+- Export predictions to CSV/Excel
 - Time-series customer behavior analysis
 - Recommendation engine for retention strategies
 - Customer lifetime value (CLV) calculation
+- A/B testing framework for retention strategies
 
 ## 🔧 Troubleshooting
 
 ### Feature Name Mismatch Error
 If you see "Feature names should match", ensure the input DataFrame column names match the trained model:
-- `Age`, `Income`, `Total_Spending`, `NumWebPurchases`, `NumStorePurchases`, `NumWebVisitsMonth`, `Recency`
+
+**Segmentation Features**: `Age`, `Income`, `Total_Spending`, `NumWebPurchases`, `NumStorePurchases`, `NumWebVisitsMonth`, `Recency`
+
+**Retention Features**: `Income`, `Recency`, `Total_Purchases`, `Campaign_Accepted`, `Recency_Ratio`, `Engagement_Score`, `NumWebVisitsMonth`, `Kidhome`, `Teenhome`, `Customer_Days`
 
 ### Model Not Found
-Ensure `kmeans_model.pkl` and `scaler.pkl` are in the same directory as `segmentation.py`
+Ensure these files are in the same directory as `segmentation.py`:
+- `kmeans_model.pkl` and `scaler.pkl` (Segmentation)
+- `retention_model.pkl`, `retention_scaler.pkl`, `retention_features.pkl` (Retention)
 
 ### Streamlit Port Already in Use
 ```bash
 streamlit run segmentation.py --server.port 8502
 ```
+
+## 📚 Model Details
+
+### Segmentation Model
+- **Algorithm**: K-Means Clustering (k=5)
+- **Features**: 7 customer attributes
+- **Preprocessing**: StandardScaler normalization
+
+### Retention Model
+- **Algorithm**: Logistic Regression
+- **Features**: 10 behavioral and financial metrics
+- **Target**: Binary churn classification (0 = Retained, 1 = Churned)
+- **Churn Definition**: Customer is marked as churned if:
+  - Recency > 80 days AND Total Spending < $500, OR
+  - Has filed complaints (Complain > 0), OR
+  - Recency > 90 days
+
+
 
 ## 📄 License
 
