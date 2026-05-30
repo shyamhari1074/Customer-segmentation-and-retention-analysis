@@ -378,8 +378,16 @@ elif st.session_state.page == 'Retention':
         retention_input_scaled = retention_scaler.transform(retention_input)
 
         # Make prediction
-        churn_prob = retention_model.predict_proba(retention_input_scaled)[0][1]
+        churn_probs = retention_model.predict_proba(retention_input_scaled)[0]
+        churn_prob = churn_probs[1]  # Probability of churn (class 1)
         churn_prediction = retention_model.predict(retention_input_scaled)[0]
+        
+        # Debug information
+        with st.expander("🔧 Debug Info"):
+            st.write("**Scaled Features:**")
+            debug_df = pd.DataFrame(retention_input_scaled, columns=retention_features).T
+            st.dataframe(debug_df)
+            st.write(f"**Raw Probabilities:** No Churn: {churn_probs[0]:.4f}, Churn: {churn_probs[1]:.4f}")
 
         # Determine risk level
         if churn_prob >= 0.7:
